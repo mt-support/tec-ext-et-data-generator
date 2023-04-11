@@ -1,0 +1,23 @@
+{
+  "name": "mt-support/tec-ext-et-data-generator",
+  "description": "Test Data Generator for ET",
+  "type": "wordpress-plugin",
+  "homepage": "http://evnt.is/",
+  "license": "GPL-2.0",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "config": {
+    "preferred-install": "dist",
+    "platform": {
+      "php": "7.4.30"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Tribe\\Extensions\\ET_Test_Data_Generator\\": "src/Tribe"
+    }
+  },
+  "require": {
+    "fzaninotto/faker": "^1.9"
+  }
+}
