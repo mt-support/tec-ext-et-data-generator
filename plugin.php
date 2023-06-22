@@ -3,7 +3,7 @@
  * Plugin Name:       Event Tickets Extension: Test Data Generator
  * GitHub Plugin URI: https://github.com/mt-support/tec-ext-et-data-generator
  * Description:       This extension aims to provide an automated tool to generate high quality, life-like data for the Event Tickets suite of plugins.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            The Events Calendar
  * Author URI:        http://evnt.is/1971
  * License:           GPL version 3 or any later version

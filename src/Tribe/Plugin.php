@@ -1,14 +1,15 @@
 <?php
 namespace Tribe\Extensions\ET_Test_Data_Generator;
 
+use TEC\Common\Contracts\Service_Provider;
 /**
  * Class Plugin
  *
- * @since   1.0.0
+ * @since   1.1.0
  *
  * @package Tribe\Extensions\ET_Test_Data_Generator
  */
-class Plugin extends \tad_DI52_ServiceProvider {
+class Plugin extends Service_Provider {
 	/**
 	 * Stores the version for the plugin.
 	 *

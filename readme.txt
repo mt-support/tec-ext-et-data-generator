@@ -5,7 +5,7 @@ Tags: event, tickets
 Requires at least: 5.9
 Tested up to: 6.2
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPL version 3 or any later version
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,6 +32,12 @@ Please visit our [extension library](https://theeventscalendar.com/extensions/) 
 Please create a GitHub issue inside the project.
 
 == Changelog ==
+
+= [1.1.0] 2023-06-22 =
+
+* Version - Event Tickets Test Data Generator 1.1.0 is only compatible with The Events Calendar 6.1.2 and higher.
+* Version - Event Tickets Test Data Generator 1.1.0 is only compatible with Event Tickets 5.6.1 and higher.
+* Fix - Lock our container usage(s) to the new Service_Provider contract in tribe-common. This prevents conflicts and potential fatals with other plugins that use a di52 container.
 
 = [1.0.0] 2023-04-11 =
 
