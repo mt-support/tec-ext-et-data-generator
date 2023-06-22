@@ -5,7 +5,7 @@ use TEC\Common\Contracts\Service_Provider;
 /**
  * Class Plugin
  *
- * @since   1.0.0
+ * @since   1.1.0
  *
  * @package Tribe\Extensions\ET_Test_Data_Generator
  */
