@@ -1,8 +1,12 @@
 <?php
 namespace Tribe\Extensions\ET_Test_Data_Generator\Generator;
 
+use Tribe__Tickets__RSVP;
+use Tribe__Tickets__Global_Stock;
+use Tribe__Tickets__Tickets;
+
 class Ticket {
-	
+
 	 /**
 	 * A boolean to mark whether the Tickets will have unlimited capacity.
 	 *
@@ -43,10 +47,10 @@ class Ticket {
 	 * Creates randomly generated Tickets.
 	 *
 	 * @since 1.0.0
-	 * 
+	 *
 	 * @param int                           $quantity The number of Tickets to create.
 	 * @param array<string,string|int|bool> $args     An array of arguments to customize the Ticket creation.
-	 * @param callable|null                 $tick     An optional callback that will be fired after each Ticket creation;
+	 * @param ?callable                     $tick     An optional callback that will be fired after each Ticket creation;
 	 *                                                the callback will receive the just created Ticket post object as
 	 *                                                argument.
 	 *
@@ -55,7 +59,7 @@ class Ticket {
 	 *                                         creation.
 	 *
 	 */
-	public function create( $quantity = 1, array $args = [], callable  $tick = null ) {
+	public function create( $quantity = 1, array $args = [], ?callable $tick = null ) {
 		if( empty( $args['event_id'] ) ) {
 			die('Event ID is required to generate Tickets.');
 		}
@@ -63,7 +67,7 @@ class Ticket {
 		$event_id  = $args['event_id'];
 
 
-		//Check Capacity type
+		// Check Capacity type
 		if( !empty( $args['capacity_type'] ) ) {
 			switch( $args['capacity_type'] ) {
 				case 'shared':
@@ -77,25 +81,25 @@ class Ticket {
 
 		if( !$this->unlimited_capacity && !empty( $args['capacity'] ) ) {
 			$this->custom_capacity = $args['capacity'];
-			//If custom Capacity is set, but not custom Stock, Custom Stock will equal the Custom Capacity.
+			// If custom Capacity is set, but not custom Stock, Custom Stock will equal the Custom Capacity.
 			$this->custom_stock = !empty( $args['stock'] ) ? $args['stock'] : $this->custom_capacity;
 		}
 
-		//Get number of existing tickets for Event
+		// Get number of existing tickets for Event.
 		$provider = \Tribe__Tickets__Tickets::get_event_ticket_provider( $event_id );
 		$existing_tickets  = count( tribe( $provider )->get_tickets($event_id) );
 
-		//Generate Tickets
+		// Generate Tickets.
 		for ( $i = 1; $i <= $quantity; $i++ ) {
 			$title = 'Ticket ' . ( $existing_tickets + $i );
-			$Tickets[] = $this->add_ticket( $event_id, $title );
+			$tickets[] = $this->add_ticket( $event_id, $title );
 
 			if ( is_callable( $tick ) ) {
-				$tick( end( $Tickets ) );
+				$tick( end( $tickets ) );
 			}
 		}
 
-		return $Tickets;
+		return $tickets;
 	}
 
 	/**
@@ -116,13 +120,13 @@ class Ticket {
 		if ( is_string( $provider ) ) {
 			$provider = new $provider;
 		}
-		
+
 		// If we don't have a paid provider as default, bail.
 		if ( Tribe__Tickets__RSVP::class === $provider->class_name ) {
 			return;
 		}
 
-			
+
 		$type    = $this->get_random_ticket_type();
 		$price   = $this->get_random_ticket_price( $type );
 
@@ -161,7 +165,7 @@ class Ticket {
 				],
 			];
 		}
-				
+
 
 		$provider->ticket_add( $event_id, $data );
 		add_post_meta( $event_id, '_AttendeeCost', $price );
@@ -188,11 +192,11 @@ class Ticket {
 	 * @param $type
 	 */
 	public function get_random_ticket_price( $type ) {
-		
+
 		$random_price = 9.99;
 
 		switch( $type ) {
-			
+
 			case 'Student':
 				$random_price = random_int(1,5) * 5;
 				break;
@@ -215,7 +219,7 @@ class Ticket {
 				$random_price = random_int(6,9) * 13;
 				break;
 		}
-			
+
 		return $random_price;
 	}
 }

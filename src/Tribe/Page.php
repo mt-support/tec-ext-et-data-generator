@@ -110,7 +110,7 @@ class Page {
 	}
 
 	/**
-	 *Parse POST request from Admin menu
+	 * Parse POST request from Admin menu
 	 *
 	 * @since 1.0.0
 	 */
@@ -120,32 +120,50 @@ class Page {
 		}
 
 		$redirect_url = tribe_get_request_var( '_wp_http_referer', admin_url( 'admin.php?page=et-test-data-generator' ) );
-		$nonce = tribe_get_request_var( '_wpnonce' );
+		$nonce        = tribe_get_request_var( '_wpnonce' );
+
 		if ( ! wp_verify_nonce( $nonce, static::$nonce_action_key ) ) {
+			error_log('nonce failed');
 			$redirect_url = add_query_arg( [ 'tribe_error' => 1 ] );
 			wp_redirect( $redirect_url );
 			exit;
 		}
 
-		$rsvps = tribe_get_request_var( [ 'tec-ext-et-test-data-generator', 'rsvps' ], [] );
-		$tickets = tribe_get_request_var( [ 'tec-ext-et-test-data-generator', 'tickets' ], [] );
+		if ( empty( tribe_get_request_var( 'tec-ext-et-test-data-generator' ) ) ) {
+			$redirect_url = add_query_arg( [ 'tribe_error' => 1 ] );
+			error_log('empty request');
+			wp_redirect( $redirect_url );
+			exit;
+		}
+
+		$rsvps     = tribe_get_request_var( [ 'tec-ext-et-test-data-generator', 'rsvps' ], [] );
+		$tickets   = tribe_get_request_var( [ 'tec-ext-et-test-data-generator', 'tickets' ], [] );
 		$attendees = tribe_get_request_var( [ 'tec-ext-et-test-data-generator', 'attendees' ], [] );
-		
+		$presets   = tribe_get_request_var( [ 'tec-ext-et-test-data-generator', 'presets' ], [] );
+
 		if ( ! empty( $rsvps['quantity'] ) ) {
 			$created_rsvps = tribe( Generator\RSVP::class )->create( $rsvps['quantity'], $rsvps );
 		}
+
 		if ( ! empty( $tickets['quantity'] ) ) {
 			$created_tickets = tribe( Generator\Ticket::class )->create( $tickets['quantity'], $tickets );
 		}
+
 		if ( ! empty( $attendees['quantity'] ) ) {
 			$created_attendees = tribe( Generator\Attendee::class )->create( $attendees['quantity'], $attendees );
-		}		
+		}
 
-		if ( ! empty( $created_rsvps ) || ! empty( $created_tickets ) || ! empty( $created_attendees ) ) {
+		if ( ! empty( $presets['quantity'] ) ) {
+			$created_presets = tribe( Generator\Preset::class )->create( $presets['quantity'], $presets );
+		}
+
+		if ( ! empty( $created_rsvps ) || ! empty( $created_tickets ) || ! empty( $created_attendees ) || ! empty( $created_presets ) ) {
 			$redirect_url = add_query_arg( [ 'tribe_success' => 1 ] );
 			wp_redirect( $redirect_url );
 			exit;
 		}
+
+		error_log('no data created');
 	}
 
 	/**
