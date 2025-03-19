@@ -123,7 +123,6 @@ class Page {
 		$nonce        = tribe_get_request_var( '_wpnonce' );
 
 		if ( ! wp_verify_nonce( $nonce, static::$nonce_action_key ) ) {
-			error_log('nonce failed');
 			$redirect_url = add_query_arg( [ 'tribe_error' => 1 ] );
 			wp_redirect( $redirect_url );
 			exit;
@@ -131,7 +130,6 @@ class Page {
 
 		if ( empty( tribe_get_request_var( 'tec-ext-et-test-data-generator' ) ) ) {
 			$redirect_url = add_query_arg( [ 'tribe_error' => 1 ] );
-			error_log('empty request');
 			wp_redirect( $redirect_url );
 			exit;
 		}
@@ -163,7 +161,6 @@ class Page {
 			exit;
 		}
 
-		error_log('no data created');
 	}
 
 	/**
